@@ -2,8 +2,8 @@
 
 /**
  * versionHistory: 
- *    2017.11.22 Sir0xb
- *    xxxx.xx.xx xxxx
+ *    2017.11.22 Sir0xb 搭建基础结构
+ *    2017.11.23 Sir0xb 增加日志功能
  * 
  * class     : 配置 css 类
  * style     : 配置样式
@@ -21,17 +21,20 @@ define(["knockout"], function (ko) {
 			self.defsrc    = ko.utils.unwrapObservable(params.default) || "";
 			self.srcFormat = params.srcFormat || function (src) { return src; };
 			self.src 	   = self.srcFormat(ko.utils.unwrapObservable(params.src) || "");
+			self.log       = params.log || function (msg) {};
 
 			self.showDefault = ko.observable(false);
 			self.showSrc = ko.observable(true);
 
 			self.defaultError = function () {
 				self.showDefault(false);
+				self.log(`ko-image default missing&file=${self.defsrc}`);
 			};
 
 			self.srcError = function () {
 				self.showSrc(false);
 				self.showDefault(true);
+				self.log(`ko-image image missing&file=${ko.utils.unwrapObservable(params.src)}`);
 			};
 		},
 		template: function () {
@@ -46,4 +49,3 @@ define(["knockout"], function (ko) {
 		}()
 	});
 });
-
