@@ -25,7 +25,7 @@ define(["knockout"], function (ko) {
 			self.log       = params.log || function (msg) {};
 
 			self.showDefault = ko.observable(false);
-			self.showSrc = ko.observable(src.length != 0);
+			self.showSrc = ko.observable(self.src.length != 0);
 
 			self.defaultError = function () {
 				self.showDefault(false);
