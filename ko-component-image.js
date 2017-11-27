@@ -4,6 +4,7 @@
  * versionHistory: 
  *    2017.11.22 Sir0xb 搭建基础结构
  *    2017.11.23 Sir0xb 增加日志功能
+ *    2017.11.27 Sir0xb 判断数据状态，减少报错量
  * 
  * class     : 配置 css 类
  * style     : 配置样式
@@ -24,7 +25,7 @@ define(["knockout"], function (ko) {
 			self.log       = params.log || function (msg) {};
 
 			self.showDefault = ko.observable(false);
-			self.showSrc = ko.observable(true);
+			self.showSrc = ko.observable(src.length != 0);
 
 			self.defaultError = function () {
 				self.showDefault(false);
@@ -33,7 +34,9 @@ define(["knockout"], function (ko) {
 
 			self.srcError = function () {
 				self.showSrc(false);
-				self.showDefault(true);
+				if (self.defsrc.length != 0) {
+					self.showDefault(true);
+				}
 				self.log(`ko-image image missing&file=${ko.utils.unwrapObservable(params.src)}`);
 			};
 		},
