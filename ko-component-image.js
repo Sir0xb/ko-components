@@ -2,9 +2,7 @@
 
 /**
  * versionHistory: 
- *    2017.11.22 Sir0xb 搭建基础结构
- *    2017.11.23 Sir0xb 增加日志功能
- *    2017.11.27 Sir0xb 判断数据状态，减少报错量
+ *    2017.11.29 Sir0xb
  * 
  * class     : 配置 css 类
  * style     : 配置样式
