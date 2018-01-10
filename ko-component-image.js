@@ -2,7 +2,7 @@
 
 /**
  * versionHistory: 
- *    2017.11.29 Sir0xb
+ *    2018.01.10 Sir0xb ko对象变化实时更新
  * 
  * class     : 配置 css 类
  * style     : 配置样式
@@ -21,13 +21,24 @@ define(["knockout"], function (ko) {
 			self.srcFormat = params.srcFormat || function (src) { return src; };
 			self.src 	   = self.srcFormat(ko.utils.unwrapObservable(params.src) || "");
 			self.log       = params.log || function (msg) {};
+			self._srcError = params.srcError || function () {};
+			self._defError = params.defError || function() {};
 
 			self.showDefault = ko.observable(self.src.length == 0 && self.defsrc.length > 0);
 			self.showSrc = ko.observable(self.src.length != 0);
 
+			if (ko.isObservable(params.src)) {
+				params.src.subscribe(function(newValue) {
+					self.src = self.srcFormat(newValue);
+					self.showDefault(false);
+					self.showSrc(true);
+				});
+			}
+
 			self.defaultError = function () {
 				self.showDefault(false);
 				self.log(`ko-image default missing&file=${self.defsrc}`);
+				self._defError.call(this);
 			};
 
 			self.srcError = function () {
@@ -36,6 +47,7 @@ define(["knockout"], function (ko) {
 					self.showDefault(true);
 				}
 				self.log(`ko-image image missing&file=${ko.utils.unwrapObservable(params.src)}`);
+				self._srcError.call(this);
 			};
 		},
 		template: function () {
