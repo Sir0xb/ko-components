@@ -2,7 +2,7 @@
 
 /**
  * versionHistory: 
- *    2018.01.10 Sir0xb ko对象变化实时更新
+ *    2018.01.26 Sir0xb ko对象变化实时更新
  * 
  * class     : 配置 css 类
  * style     : 配置样式
@@ -19,19 +19,19 @@ define(["knockout"], function (ko) {
 			self.style     = ko.utils.unwrapObservable(params.style) || "";
 			self.defsrc    = ko.utils.unwrapObservable(params.default) || "";
 			self.srcFormat = params.srcFormat || function (src) { return src; };
-			self.src 	   = self.srcFormat(ko.utils.unwrapObservable(params.src) || "");
+			self.src 	   = ko.observable(ko.utils.unwrapObservable(self.srcFormat(ko.utils.unwrapObservable(params.src) || "")));
 			self.log       = params.log || function (msg) {};
 			self._srcError = params.srcError || function () {};
 			self._defError = params.defError || function() {};
 
-			self.showDefault = ko.observable(self.src.length == 0 && self.defsrc.length > 0);
-			self.showSrc = ko.observable(self.src.length != 0);
+			self.showDefault = ko.observable(self.src().length == 0 && self.defsrc.length > 0);
+			self.showSrc = ko.observable(self.src().length != 0);
 
 			if (ko.isObservable(params.src)) {
 				params.src.subscribe(function(newValue) {
-					self.src = self.srcFormat(newValue);
-					self.showDefault(false);
-					self.showSrc(true);
+					self.src(ko.utils.unwrapObservable(self.srcFormat(newValue || "")));
+					self.showDefault(self.src().length == 0 && self.defsrc.length > 0);
+					self.showSrc(self.src().length != 0);
 				});
 			}
 
